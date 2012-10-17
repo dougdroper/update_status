@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "status"
   gem.homepage = "http://github.com/dougdroper/status"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Status update for pull requests}
+  gem.description = %Q{Updates pull requests on github, with latest build from Jenkins and QA status}
   gem.email = "douglasroper@notonthehighstreet.com"
   gem.authors = ["Douglas Roper"]
   # dependencies defined in Gemfile
