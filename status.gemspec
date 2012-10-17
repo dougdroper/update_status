@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/status/github/pull_request.rb",
     "lib/status/github/statuses.rb",
     "lib/status/jenkins.rb",
+    "status.gemspec",
     "test/helper.rb",
     "test/test_status.rb"
   ]
