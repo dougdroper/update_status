@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "bin/.DS_Store",
     "bin/status",
     "lib/.DS_Store",
     "lib/status.rb",
