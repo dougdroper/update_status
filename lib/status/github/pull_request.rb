@@ -2,9 +2,9 @@
 
 module Status
   module Github
-    module PullRequest
+    class PullRequest
       def pull_request_found?
-        !MultiJson.decode(get_pull_request).select {|pull| pull["head"]["sha"] == Status.sha}.empty?
+        !MultiJson.decode(get_pull_request).select {|pull| pull["head"]["ref"] == Status.branch}.empty?
       end
 
       def create_pull_request
@@ -12,8 +12,6 @@ module Status
         answer = gets
         answer.chomp.downcase == "y" ? new_pull_request : abort("exit")
       end
-
-      private
 
       def new_pull_request
         response = MultiJson.decode(post_pull_request)
@@ -27,15 +25,15 @@ module Status
       end
 
       def get_pull_request
-        system("curl -s #{pull_request_api}")
+        Status::Request.new.get(pull_request_api)
       end
 
       def post_pull_request
-        system("curl -s -d #{MultiJson.encode(payload)} #{pull_request_api}")
+        Status::Request.new.post(pull_request_api, MultiJson.encode(payload))
       end
 
       def pull_request_api
-        "https://api.github.com/repos/#{Status.owner}/#{Status.repo}/pulls?access_token=#{Status.token}"
+        "/repos/#{Status.owner}/#{Status.repo}/pulls?access_token=#{Status.token}"
       end
     end
   end

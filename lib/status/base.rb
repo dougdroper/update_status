@@ -4,8 +4,6 @@ require File.dirname(__FILE__) + '/github/statuses'
 
 module Status
   class Base
-    include Status::Github::PullRequest
-
     attr_reader :qa_status
 
     def initialize(qa_status="pending")
@@ -14,8 +12,11 @@ module Status
     end
 
     def update
-      create_pull_request unless pull_request_found?
+      puts "Updating..."
+      pull = Status::Github::PullRequest.new
+      pull.create_pull_request unless pull.pull_request_found?
       @statuses.request
+      puts "Done."
     end
   end
 end

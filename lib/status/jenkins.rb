@@ -10,6 +10,7 @@ module Status
     end
 
     def ci_url
+      #http://ci.noths.com/job/master/lastBuild/api/json
       "#{Status.ci_url}#{Status.branch}/lastBuild/api/json"
     end
 
@@ -20,7 +21,7 @@ module Status
     end
 
     def get_ci_status
-      response = system("curl -s --user #{username}:#{password} #{ci_url}")
+      response = `curl -s --user #{username}:#{password} #{ci_url}`
       return "not found" if response.match(/Error/)
       response = MultiJson.decode(response)
 

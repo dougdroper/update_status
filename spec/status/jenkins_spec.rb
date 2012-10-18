@@ -7,17 +7,18 @@ describe Status::Jenkins do
 
   before do
     Status.stub(:config => stub(:attrs => {}))
+    Status.stub(:branch => "")
     @klass = Test.new
   end
 
   context "#state" do
     it "should be Green" do
-      @klass.stub(:system => "{\"building\": false, \"result\": \"success\"}")
+      @klass.stub(:` => "{\"building\": false, \"result\": \"success\"}")
       @klass.state.should == "Green"
     end
 
     it "should be building" do
-      @klass.stub(:system => "{\"building\": true, \"result\": \"success\"}")
+      @klass.stub(:` => "{\"building\": true, \"result\": \"success\"}")
       @klass.state.should == "building"
     end
   end

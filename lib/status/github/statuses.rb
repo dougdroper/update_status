@@ -8,13 +8,13 @@ module Status
       end
 
       def request
-        response = system("curl -s -d '#{payload}' #{status_api}")
+        Status::Request.new.post(status_api, payload)
       end
 
       private
 
       def status_api
-        "https://api.github.com/repos/#{Status.owner}/#{Status.repo}/statuses/" + Status.sha + "?access_token=" + Status.token
+        "/repos/#{Status.owner}/#{Status.repo}/statuses/" + Status.sha + "?access_token=" + Status.token
       end
 
       def description
@@ -22,7 +22,7 @@ module Status
       end
 
       def payload
-        {:state => state, :description => description}.to_json
+        {:state => state, :description => description, :target_url => "#{Status.ci_url}#{Status.branch}"}.to_json
       end
 
       def state

@@ -7,12 +7,14 @@ end
 
 require 'fileutils'
 require 'multi_json'
+require 'faraday'
 
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require 'status/base'
 require 'status/jenkins'
 require 'status/config'
+require 'status/request'
 
 require 'status/github/statuses'
 require 'status/github/pull_request'
@@ -25,15 +27,15 @@ module Status
   end
 
   def sha
-    %x[git log -1 --pretty=format:'%H']
+    `git log -1 --pretty=format:'%H'`
   end
 
   def title
-     %x[git log -1 --pretty=format:'%b']
+     `git log -1 --pretty=format:'%b'`
   end
 
   def branch
-    %x[git rev-parse --abbrev-ref HEAD].chomp!
+    `git rev-parse --abbrev-ref HEAD`.chomp
   end
 
   def token
