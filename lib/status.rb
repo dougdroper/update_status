@@ -10,7 +10,7 @@ require 'multi_json'
 
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
-require 'status/github'
+require 'status/base'
 require 'status/jenkins'
 require 'status/config'
 
@@ -46,6 +46,10 @@ module Status
 
   def owner
     Status.config.attrs["owner"]
+  end
+
+  def ci_url
+    Status.config.attrs["ci_url"]
   end
 
 end

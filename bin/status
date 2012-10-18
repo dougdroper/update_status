@@ -5,4 +5,4 @@ $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require 'status'
 
-Status::Github.new(*ARGV).update
+Status::Base.new(*ARGV).update

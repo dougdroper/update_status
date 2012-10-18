@@ -17,14 +17,17 @@ module Status
     end
 
     def validate
-      validate_presence_of :username
-      validate_presence_of :password
+      validate_presence_of :owner
+      validate_presence_of :repo
       validate_presence_of :token
+      validate_presence_of :ci_url, "ci"
+      validate_presence_of :username, "ci"
+      validate_presence_of :password, "ci"
     end
 
-    def validate_presence_of(sym)
+    def validate_presence_of(sym, type="github")
       unless attrs.include?(sym.to_s)
-        puts "You have not entered a #{sym}"
+        puts "You have not entered a #{sym} for #{type}"
         attribute = gets
         self.attrs = ({sym => attribute.chomp})
       end
@@ -32,9 +35,10 @@ module Status
 
     def bootstrap
       @attrs = {
-        :owner => "notonthehighstreet",
-        :repo => "notonthehighstreet",
-        :ci => "http://ci.noths.com/job/"
+        # eg:
+        # :owner => "dougdroper",
+        # :repo => "status",
+        # :ci_url => "http://jenkins-ci.org/job/"
       }
       save
     end
