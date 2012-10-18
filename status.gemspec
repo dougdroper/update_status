@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = "2012-10-18"
   s.description = "Updates pull requests on github, with latest build from Jenkins and QA status"
   s.email = "douglasroper@notonthehighstreet.com"
-  s.executables = [".DS_Store", "status"]
+  s.executables = ["status"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
