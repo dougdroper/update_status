@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Douglas Roper"]
-  s.date = "2012-10-17"
+  s.date = "2012-10-18"
   s.description = "Updates pull requests on github, with latest build from Jenkins and QA status"
   s.email = "douglasroper@notonthehighstreet.com"
   s.executables = [".DS_Store", "status"]
@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    ".DS_Store",
     ".document",
     "Gemfile",
     "Gemfile.lock",
@@ -26,15 +25,16 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "bin/.DS_Store",
     "bin/status",
-    "lib/.DS_Store",
     "lib/status.rb",
+    "lib/status/base.rb",
     "lib/status/config.rb",
-    "lib/status/github.rb",
     "lib/status/github/pull_request.rb",
     "lib/status/github/statuses.rb",
     "lib/status/jenkins.rb",
+    "spec/spec_helper.rb",
+    "spec/status/github/pull_request_spec.rb",
+    "spec/status/jenkins_spec.rb",
     "status.gemspec",
     "test/helper.rb",
     "test/test_status.rb"
@@ -50,14 +50,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<multi_json>, [">= 1.0.3"])
-      s.add_development_dependency(%q<shoulda>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<multi_json>, [">= 1.0.3"])
-      s.add_dependency(%q<shoulda>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
@@ -65,7 +65,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<multi_json>, [">= 1.0.3"])
-    s.add_dependency(%q<shoulda>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
