@@ -41,6 +41,7 @@ module Status
         # :ci_url => "http://jenkins-ci.org/"
       }
       save
+      abort("Config setup: Run status")
     end
 
     def attrs=(attribute={})

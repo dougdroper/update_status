@@ -1,6 +1,16 @@
 # coding: utf-8
 
 module Status
+  class NotFoundException < Exception
+    def initialize
+      puts "Not found"
+      puts "Make sure #{ENV['HOME']}/.status.conf is set up correctly"
+      abort("exit")
+    end
+  end
+end
+
+module Status
   class GithubRequest
     attr_reader :url, :options
     def initialize
@@ -34,7 +44,7 @@ module Status
       begin
         MultiJson.decode @site[path].get
       rescue
-        "not found"
+        raise NotFoundException.new
       end
     end
 
@@ -42,7 +52,7 @@ module Status
       begin
         MultiJson.decode @site[path].post(MultiJson.encode(data))
       rescue
-        "not found"
+        raise NotFoundException.new
       end
     end
   end

@@ -1,6 +1,33 @@
 = status
 
-Updates pull requests on github, with latest build from Jenkins and QA status
+Updates pull requests on github using the statuses api (http://developer.github.com/v3/repos/statuses/), with latest build from Jenkins and QA status
+
+= Usage
+
+on your branch run
+
+$: status
+
+This will take you through some config:
+eg
+
+:owner => "dougdroper",
+
+:repo => "status",
+
+:ci_url => "http://jenkins-ci.org/",
+
+:token => "your github token http://developer.github.com/v3/oauth/",
+
+:username => "your ci username",
+
+:password => "your ci password"
+
+When your branch has passed QA
+
+$: status pass
+
+
 
 == Contributing to status
 
