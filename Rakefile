@@ -14,7 +14,7 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "status"
+  gem.name = "update_status"
   gem.homepage = "http://github.com/dougdroper/status"
   gem.license = "MIT"
   gem.summary = %Q{Status update for pull requests}
