@@ -9,11 +9,6 @@ module Status
       "building"
     end
 
-    def ci_url
-      #http://ci.noths.com/job/master/lastBuild/api/json
-      "#{Status.ci_url}#{Status.branch}/lastBuild/api/json"
-    end
-
     def pass?
       @status ||= get_ci_status
       return false if @status == "building" || @status == "not found"
@@ -21,23 +16,13 @@ module Status
     end
 
     def get_ci_status
-      response = `curl -s --user #{username}:#{password} #{ci_url}`
-      return "not found" if response.match(/Error/)
-      response = MultiJson.decode(response)
-
-      if response["building"] == true
-        "building"
-      else
-        response["result"]
-      end
+      response = Request.new(:ci).get(path)
+      return response if response == "not found"
+      response["building"] == true ? "building" : response["result"]
     end
 
-    def username
-      Status.config.attrs["username"]
-    end
-
-    def password
-      Status.config.attrs["password"]
+    def path
+      "/job/#{Status.branch}/lastBuild/api/json"
     end
   end
 end

@@ -22,7 +22,7 @@ module Status
       end
 
       def payload
-        {:state => state, :description => description, :target_url => "#{Status.ci_url}#{Status.branch}"}.to_json
+        {:state => state, :description => description, :target_url => "#{Status.ci_url}#{Status.branch}"}
       end
 
       def state

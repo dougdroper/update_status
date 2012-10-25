@@ -7,7 +7,7 @@ end
 
 require 'fileutils'
 require 'multi_json'
-require 'faraday'
+require 'rest-client'
 
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
@@ -31,7 +31,7 @@ module Status
   end
 
   def title
-     `git log -1 --pretty=format:'%b'`
+     `git log -1 --pretty=format:'%s'`
   end
 
   def branch
@@ -52,6 +52,14 @@ module Status
 
   def ci_url
     Status.config.attrs["ci_url"]
+  end
+
+  def ci_user
+    Status.config.attrs["username"]
+  end
+
+  def ci_password
+    Status.config.attrs["password"]
   end
 
 end

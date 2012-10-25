@@ -1,34 +1,49 @@
+# coding: utf-8
+
+module Status
+  class GithubRequest
+    attr_reader :url, :options
+    def initialize
+      @url = "https://api.github.com"
+      @options = {}
+    end
+  end
+end
+
+module Status
+  class CiRequest
+    attr_reader :url, :options
+    def initialize
+      @url = Status.ci_url
+      @options = {:user => Status.ci_user, :password => Status.ci_password}
+    end
+  end
+end
+
 
 module Status
   class Request
     attr_reader :conn
-    def initialize(type="github")
-      url = type == "github" ? "https://api.github.com" : Status.ci_url
-      @conn = Faraday.new(:url => url) do |faraday|
-        faraday.request  :url_encoded
-        faraday.adapter  Faraday.default_adapter
+    def initialize(type=:github)
+      @klass = {:github => GithubRequest, :ci => CiRequest}[type]
+      @klass = @klass.new
+      @site = RestClient::Resource.new(@klass.url, @klass.options, :headers => { :accept => :json, :content_type => :json })
+    end
+
+    def get(path)
+      begin
+        MultiJson.decode @site[path].get
+      rescue
+        "not found"
       end
     end
 
-    def get(url)
-      @response = @conn.get(url)
-      body
-    end
-
-    def post(url, data)
-      respose = @conn.post do |req|
-        req.url url
-        req.headers['Content-Type'] = 'application/json'
-        req.body = data
+    def post(path, data)
+      begin
+        MultiJson.decode @site[path].post(MultiJson.encode(data))
+      rescue
+        "not found"
       end
-    end
-
-    def status
-      @response.code
-    end
-
-    def body
-      @response.body
     end
   end
 end

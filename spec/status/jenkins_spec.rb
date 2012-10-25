@@ -5,21 +5,29 @@ describe Status::Jenkins do
     include Status::Jenkins
   end
 
+  subject {Test.new}
+
   before do
     Status.stub(:config => stub(:attrs => {}))
     Status.stub(:branch => "")
-    @klass = Test.new
+
+    stub(Status::Request)
   end
 
   context "#state" do
-    it "should be Green" do
-      @klass.stub(:` => "{\"building\": false, \"result\": \"success\"}")
-      @klass.state.should == "Green"
+    it "is Green when ci result is success" do
+      Status::Request.stub(:new => stub(:get => {"building" => false, "result" => "success"}))
+      subject.state.should == "Green"
     end
 
-    it "should be building" do
-      @klass.stub(:` => "{\"building\": true, \"result\": \"success\"}")
-      @klass.state.should == "building"
+    it "is Building when ci result is building" do
+      Status::Request.stub(:new => stub(:get => {"building" => true, "result" => "success"}))
+      subject.state.should == "building"
+    end
+
+    it "is Building when ci result is not found" do
+      Status::Request.stub(:new => stub(:get => "not found"))
+      subject.state.should == "building"
     end
   end
 end

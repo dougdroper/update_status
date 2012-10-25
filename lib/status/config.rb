@@ -38,7 +38,7 @@ module Status
         # eg:
         # :owner => "dougdroper",
         # :repo => "status",
-        # :ci_url => "http://jenkins-ci.org/job/"
+        # :ci_url => "http://jenkins-ci.org/"
       }
       save
     end

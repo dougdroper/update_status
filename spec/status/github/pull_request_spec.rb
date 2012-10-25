@@ -9,7 +9,7 @@ describe Status::Github::PullRequest do
 
   context "#pull_request_found?" do
     before do
-      Status::Request.stub(:new => stub(:get => '[{"head": {"ref": "branch_name"}}]'))
+      Status::Request.stub(:new => stub(:get => [{"head" => {"ref" => "branch_name"}}]))
     end
 
     it "is not found if a pull request does not exists" do
@@ -31,12 +31,14 @@ describe Status::Github::PullRequest do
 
     it "creates a pull request" do
       Status::Request.stub(:new => stub(:post => "{\"status\":\"success\"}"))
-      subject.create_pull_request.should == "success"
+      subject.stub(:puts => "url")
+      subject.create_pull_request.should == "url"
     end
 
     it "returns error msg when pull request creation fails" do
       Status::Request.stub(:new => stub(:post => "{\"message\":\"server error\"}"))
-      subject.create_pull_request.should == "server error"
+      subject.stub(:puts => "not found")
+      subject.create_pull_request.should == "not found"
     end
 
     it "aborts pull request creation" do
