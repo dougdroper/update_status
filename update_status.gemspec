@@ -38,7 +38,8 @@ Gem::Specification.new do |s|
     "spec/status/jenkins_spec.rb",
     "status.gemspec",
     "test/helper.rb",
-    "test/test_status.rb"
+    "test/test_status.rb",
+    "update_status.gemspec"
   ]
   s.homepage = "http://github.com/dougdroper/status"
   s.licenses = ["MIT"]
