@@ -15,7 +15,7 @@ eg
 
 :repo => "status",
 
-:ci_url => "http://jenkins-ci.org/",
+:ci_url => "http://jenkins-ci.org",
 
 :token => "your github token http://developer.github.com/v3/oauth/",
 
