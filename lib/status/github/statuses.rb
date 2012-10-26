@@ -8,7 +8,7 @@ module Status
       end
 
       def request
-        Status::Request.new.post(status_api, payload)
+        Request.new.post(status_api, payload)
       end
 
       private
@@ -22,7 +22,11 @@ module Status
       end
 
       def payload
-        {:state => state, :description => description, :target_url => "#{Status.ci_url}#{Status.branch}"}
+        {:state => state, :description => description, :target_url => target_url}
+      end
+
+      def target_url
+        "#{Status.ci_url}/job/#{Status.branch}"
       end
 
       def state
