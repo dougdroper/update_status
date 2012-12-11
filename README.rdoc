@@ -1,5 +1,7 @@
 = status
 
+{<img src="https://secure.travis-ci.org/dougdroper/status.png?branch=master" alt="Build Status" />}[https://travis-ci.org/dougdroper/status]
+
 Updates pull requests on github using the statuses api (http://developer.github.com/v3/repos/statuses/), with latest build from Jenkins and QA status
 
 = Usage
