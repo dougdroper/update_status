@@ -17,7 +17,6 @@ module Status
 
     def get_ci_status
       response = Request.new(:ci).get(path)
-      raise response.inspect
       return "pending" if response == "not found"
       return "pending" if response["building"] == true
       return "failure" unless response["result"].downcase == "success"
