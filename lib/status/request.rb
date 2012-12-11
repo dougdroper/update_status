@@ -37,7 +37,7 @@ module Status
     def initialize(type=:github)
       @klass = {:github => GithubRequest, :ci => CiRequest}[type]
       @klass = @klass.new
-      @site = RestClient::Resource.new(@klass.url, :headers => { :accept => :json, :content_type => :json })
+      @site = RestClient::Resource.new(@klass.url, @klass.options, :headers => { :accept => :json, :content_type => :json })
     end
 
     def get(path)
