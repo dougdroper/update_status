@@ -24,7 +24,7 @@ module Status
     end
 
     def path
-      "/job/#{Status.branch}/lastBuild/api/json?token=#{Status.ci_token}"
+      "/job/#{Status.branch}/lastBuild/api/json"
     end
   end
 end

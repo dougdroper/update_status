@@ -54,10 +54,6 @@ module Status
     Status.config.attrs["ci_url"]
   end
 
-  def ci_token
-    "0a9f342928d2e2fc953425061b314b83"
-  end
-
   def ci_user
     Status.config.attrs["username"]
   end
