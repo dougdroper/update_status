@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Status::Github::Statuses do
   before do
-    stub_const("Jenkins", stub)
+    stub_const("Status::Jenkins", stub)
   end
 
   subject { Status::Github::Statuses }
@@ -12,18 +12,23 @@ describe Status::Github::Statuses do
   end
 
   it "has a payload description of the ci state and qa status" do
-    Jenkins.stub(:state => "Green")
-    subject.new.send(:description).should == "Build status: Green, QA pending"
+    Status::Jenkins.stub(:state => "success")
+    subject.new.send(:description).should == "Build status: success, QA pending"
   end
 
   it "has a payload pending state when ci is passing but qa hasn't passed" do
-    Jenkins.stub(:pass? => true)
+    Status::Jenkins.stub(:pass? => true, :state => "pending")
     subject.new.send(:state).should == "pending"
   end
 
   it "has a payload success state when ci is passing and qa has passed" do
-    Jenkins.stub(:pass? => true)
+    Status::Jenkins.stub(:pass? => true, :state => "success")
     subject.new("pass").send(:state).should == "success"
+  end
+
+  it "has a payload error state when ci has an error" do
+    Status::Jenkins.stub(:pass? => false, :state => "nothing")
+    subject.new("pass").send(:state).should == "error"
   end
 
   it "goes to the correct status api" do

@@ -35,5 +35,5 @@ DEPENDENCIES
   multi_json (>= 1.0.3)
   rcov
   rdoc (~> 3.12)
-  rest-client (>= 1.6.7)
+  rest-client (>= 1.6.2)
   rspec (>= 2.11.0)

@@ -5,20 +5,22 @@ module Status
     extend self
 
     def state
-      return "Green" if pass?
-      "building"
+      return "success" if pass?
+      @status
     end
 
     def pass?
       @status ||= get_ci_status
-      return false if @status == "building" || @status == "not found"
+      return false unless @status == "success"
       true
     end
 
     def get_ci_status
       response = Request.new(:ci).get(path)
-      return response if response == "not found"
-      response["building"] == true ? "building" : response["result"]
+      return "pending" if response == "not found"
+      return "pending" if response["building"] == true
+      return "failure" unless response["result"].downcase == "success"
+       "success"
     end
 
     def path
@@ -26,3 +28,5 @@ module Status
     end
   end
 end
+
+

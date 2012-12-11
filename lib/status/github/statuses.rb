@@ -30,7 +30,11 @@ module Status
       end
 
       def state
-        (Jenkins.pass? && @qa_status == "pass") ? states[3] : states[2]
+        (Jenkins.pass? && @qa_status == "pass") ? states[3] : git_state
+      end
+
+      def git_state
+        states.include?(Jenkins.state) ? states[states.index(Jenkins.state)] : "error"
       end
 
       def states
