@@ -6,30 +6,47 @@ Updates pull requests on github using the statuses api (http://developer.github.
 
 = Usage
 
+<tt>gem install update_status</tt>
+
+
 on your branch run
 
-$: status
+$: <tt>status</tt>
 
-This will take you through some config:
-eg
+This will generate a .status.yml file in the current directory, you will need to edit this file with your credentials.
 
-:owner => "dougdroper",
+.status.yml:
 
-:repo => "status",
+---
+:username: Jenkins username
 
-:ci_url => "http://jenkins-ci.org",
+:token: Githubs API token (http://developer.github.com/v3/oauth/)
 
-:token => "your github token http://developer.github.com/v3/oauth/",
+:owner: eg. dougdroper
 
-:username => "your ci username",
+:password: Jenkins password
 
-:password => "your ci password"
+:repo: eg. status
+
+:ci_url: eg. http://ci.jenkins.com
+
+add .status.yml to .gitignore
 
 When your branch has passed QA
 
-$: status pass
+$: <tt>status -s pass</tt>
 
+You can pass a different branch
 
+$: <tt>status -b other_feature_branch</tt>
+
+or
+
+$: <tt>status -b other_feature_branch -s pass</tt>
+
+help
+
+$: <tt>status -h</tt>
 
 == Contributing to status
 
