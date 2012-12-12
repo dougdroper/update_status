@@ -1,15 +1,11 @@
 require 'spec_helper'
 
 describe Status::Jenkins do
-  class Test
-    include Status::Jenkins
-  end
 
-  subject {Test.new}
+  subject {Status::Jenkins.new("")}
 
   before do
     Status.stub(:config => stub(:attrs => {}))
-    Status.stub(:branch => "")
 
     stub(Status::Request)
   end

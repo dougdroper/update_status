@@ -3,8 +3,10 @@
 module Status
   module Github
     class Statuses
-      def initialize(qa_status="pending")
+      def initialize(qa_status, branch)
         @qa_status = qa_status
+        @branch = branch
+        @jenkins = Jenkins.new(branch)
       end
 
       def request
@@ -14,11 +16,11 @@ module Status
       private
 
       def status_api
-        "/repos/#{Status.owner}/#{Status.repo}/statuses/" + Status.sha + "?access_token=" + Status.token
+        "/repos/#{Status.owner}/#{Status.repo}/statuses/" + sha + "?access_token=" + Status.token
       end
 
       def description
-        "Build status: #{Jenkins.state}, QA #{@qa_status}"
+        "Build status: #{@jenkins.state}, QA #{@qa_status}"
       end
 
       def payload
@@ -26,19 +28,25 @@ module Status
       end
 
       def target_url
-        "#{Status.ci_url}/job/#{Status.branch}"
+        "#{Status.ci_url}/job/#{@branch}"
       end
 
       def state
-        (Jenkins.pass? && @qa_status == "pass") ? states[3] : git_state
+        return "success" if @jenkins.pass? && @qa_status == "pass"
+        return "pending" if @jenkins.pass? && @qa_status != "pass"
+        git_state
       end
 
       def git_state
-        states.include?(Jenkins.state) ? states[states.index(Jenkins.state)] : "error"
+        states.include?(@jenkins.state) ? states[states.index(@jenkins.state)] : "error"
       end
 
       def states
-        %w(error failure pending success)
+        %w(error failure)
+      end
+
+      def sha
+        `git log #{@branch} -1 --pretty=format:'%H'`
       end
     end
   end

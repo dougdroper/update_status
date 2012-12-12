@@ -6,14 +6,19 @@ module Status
   class Base
     attr_reader :qa_status
 
-    def initialize(qa_status="pending")
-      @qa_status = qa_status
-      @statuses = Status::Github::Statuses.new(qa_status)
+    def initialize(options)
+      @qa_status = options[:state] || "pending"
+      @branch = options[:branch] || branch
+      @statuses = Status::Github::Statuses.new(@qa_status, @branch)
+    end
+
+    def branch
+      `git rev-parse --abbrev-ref HEAD`.chomp
     end
 
     def update
       puts "Updating..."
-      pull = Status::Github::PullRequest.new
+      pull = Status::Github::PullRequest.new(@branch)
       pull.create_pull_request unless pull.pull_request_found?
       @statuses.request
       puts "Done."

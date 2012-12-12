@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Status::Github::PullRequest do
-  subject { Status::Github::PullRequest.new }
+  subject { Status::Github::PullRequest.new("") }
 
   before do
-    Status.stub(:config => stub(:attrs => {}))
+    Status.stub(:config => stub(:parsed => {}))
   end
 
   context "#pull_request_found?" do
@@ -14,12 +14,12 @@ describe Status::Github::PullRequest do
 
     it "is not found if a pull request does not exists" do
       Status.stub(:branch => "new_branch")
-      subject.pull_request_found?.should be_false
+      Status::Github::PullRequest.new("new_branch").pull_request_found?.should be_false
     end
 
     it "is found if a pull request does exists" do
       Status.stub(:branch => "branch_name")
-      subject.pull_request_found?.should be_true
+      Status::Github::PullRequest.new("branch_name").pull_request_found?.should be_true
     end
   end
 

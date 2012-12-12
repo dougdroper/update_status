@@ -1,19 +1,14 @@
 # coding: utf-8
+require "yaml"
 
 module Status
   class Config
-    FILE = "#{ENV['HOME']}/.status.conf"
+    FILE = ".status.yml"
 
-    attr_reader :attrs
-
+    attr_reader :parsed
     def initialize
-      bootstrap unless File.exist?(file)
-      load_config
+      bootstrap
       validate
-    end
-
-    def file
-      FILE
     end
 
     def validate
@@ -25,37 +20,40 @@ module Status
       validate_presence_of :password, "ci"
     end
 
-    def validate_presence_of(sym, type="github")
-      unless attrs.include?(sym.to_s)
-        puts "You have not entered a #{sym} for #{type}"
-        attribute = gets
-        self.attrs = ({sym => attribute.chomp})
+    def bootstrap
+      @parsed = begin
+        YAML.load(File.open(FILE))
+      rescue Exception => e
+        create_file
+        puts "Could not parse YAML file #{FILE}: #{e.message}"
+        abort("exit")
       end
     end
 
-    def bootstrap
-      @attrs = {
-        # eg:
-        # :owner => "dougdroper",
-        # :repo => "status",
-        # :ci_url => "http://jenkins-ci.org/"
-      }
-      save
-      abort("Config setup: Run status")
+    private
+
+    def validate_presence_of(sym, type="github")
+      unless parsed.include?(sym)
+        puts "Please update #{FILE} with a #{sym} for #{type}"
+        abort("exit")
+      end
     end
 
-    def attrs=(attribute={})
-      @attrs.merge!(attribute)
-      save
-    end
-
-    def load_config
-      @attrs = MultiJson.decode(File.new(file, 'r').read)
-    end
-
-    def save
-      json = MultiJson.encode(attrs)
-      File.open(file, 'w') {|f| f.write(json) }
+    def create_file
+      puts "No #{FILE} found, create one? (y/n)"
+      answer = gets
+      if answer.chomp.downcase == "y"
+        data = {
+          :username => "Jenkins username",
+          :password => "Jenkins password",
+          :ci_url => "eg. http://ci.jenkins.com",
+          :owner => "eg. dougdroper",
+          :repo => "eg. status",
+          :token => "Githubs API token (http://developer.github.com/v3/oauth/)"}
+        File.open(FILE, 'w') {|f| f.write(data.to_yaml)}
+        puts "Please update #{FILE} and then run status"
+        abort("exit")
+      end
     end
   end
 end

@@ -4,5 +4,13 @@
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require 'status'
+require 'optparse'
 
-Status::Base.new(*ARGV).update
+OptionParser.new do |o|
+  o.on("-s STATE", "--state", "Status of QA (default pending) [pending/pass]") {|s| $state = s }
+  o.on("-b BRANCH", "--branch BRANCH", "Branch name") {|b| $branch = b }
+  o.on("-h", "--help", "Display this screen") {puts o; exit }
+  o.parse!
+end
+
+Status::Base.new({:state => $state, :branch => $branch}).update

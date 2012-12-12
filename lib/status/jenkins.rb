@@ -1,8 +1,10 @@
 # coding: utf-8
 
 module Status
-  module Jenkins
-    extend self
+  class Jenkins
+    def initialize(branch)
+      @branch = branch
+    end
 
     def state
       return "success" if pass?
@@ -24,7 +26,7 @@ module Status
     end
 
     def path
-      "/job/#{Status.branch}/lastBuild/api/json"
+      "/job/#{@branch}/lastBuild/api/json"
     end
   end
 end

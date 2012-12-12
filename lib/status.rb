@@ -26,40 +26,28 @@ module Status
     @config ||= Status::Config.new
   end
 
-  def sha
-    `git log -1 --pretty=format:'%H'`
-  end
-
-  def title
-     `git log -1 --pretty=format:'%s'`
-  end
-
-  def branch
-    `git rev-parse --abbrev-ref HEAD`.chomp
-  end
-
   def token
-    Status.config.attrs["token"]
+    Status.config.parsed[:token]
   end
 
   def repo
-    Status.config.attrs["repo"]
+    Status.config.parsed[:repo]
   end
 
   def owner
-    Status.config.attrs["owner"]
+    Status.config.parsed[:owner]
   end
 
   def ci_url
-    Status.config.attrs["ci_url"]
+    Status.config.parsed[:ci_url]
   end
 
   def ci_user
-    Status.config.attrs["username"]
+    Status.config.parsed[:username]
   end
 
   def ci_password
-    Status.config.attrs["password"]
+    Status.config.parsed[:password]
   end
 
 end

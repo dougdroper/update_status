@@ -3,12 +3,16 @@
 module Status
   module Github
     class PullRequest
+      def initialize(branch)
+        @branch = branch
+      end
+
       def pull_request_found?
-        !get_pull_request.select {|pull| pull["head"]["ref"] == Status.branch}.empty?
+        !get_pull_request.select {|pull| pull["head"]["ref"] == @branch}.empty?
       end
 
       def create_pull_request
-        puts "no pull request found create one? (y/n)"
+        puts "No pull request found, create one? (y/n)"
         answer = gets
         answer.chomp.downcase == "y" ? new_pull_request : abort("exit")
       end
@@ -22,7 +26,11 @@ module Status
         puts "enter a description"
         body = gets
 
-        {:title => Status.title, :body => body, :base => "master", :head => Status.branch }
+        {:title => title, :body => body, :base => "master", :head => @branch }
+      end
+
+      def title
+        `git log #{@branch} -1 --pretty=format:'%s'`
       end
 
       def get_pull_request
