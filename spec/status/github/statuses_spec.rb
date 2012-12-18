@@ -23,6 +23,11 @@ describe Status::Github::Statuses do
     subject.new("pending", "feature_branch").send(:state).should == "pending"
   end
 
+  it "has a payload pending state when ci is pending but qa hasn't passed" do
+    @jenkins.stub(:new => stub(:state => "pending", :pass? => false))
+    subject.new("pending", "feature_branch").send(:state).should == "pending"
+  end
+
   it "has a payload success state when ci is passing and qa has passed" do
     @jenkins.stub(:new => stub(:state => "success", :pass? => true))
     subject.new("pass", "feature_branch").send(:state).should == "success"

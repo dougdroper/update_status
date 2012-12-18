@@ -11,6 +11,10 @@ describe Status::Jenkins do
   end
 
   context "#state" do
+    it "has a path with underscores" do
+      Status::Jenkins.new("dr/feature").path.should == "/job/dr_feature/lastBuild/api/json"
+    end
+
     it "is success when ci result is success" do
       Status::Request.stub(:new => stub(:get => {"building" => false, "result" => "success"}))
       subject.state.should == "success"

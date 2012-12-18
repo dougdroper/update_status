@@ -3,7 +3,7 @@
 module Status
   class Jenkins
     def initialize(branch)
-      @branch = branch
+      @branch = branch.gsub(/\//, "_")
     end
 
     def state

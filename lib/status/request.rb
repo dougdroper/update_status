@@ -2,9 +2,9 @@
 
 module Status
   class NotFoundException < Exception
-    def initialize(e)
+    def initialize(klass, e)
+      puts klass.class.inspect + " error"
       puts e.inspect
-      puts "Make sure #{ENV['HOME']}/.status.conf is set up correctly and you can connect to githubs api"
       abort("exit")
     end
   end
@@ -44,7 +44,7 @@ module Status
       begin
         MultiJson.decode @site[path].get
       rescue Exception => e
-        raise NotFoundException.new(e)
+        raise NotFoundException.new(@klass, e)
       end
     end
 
@@ -52,7 +52,7 @@ module Status
       begin
         MultiJson.decode @site[path].post(MultiJson.encode(data))
       rescue Exception => e
-        raise NotFoundException.new(e)
+        raise NotFoundException.new(@klass, e)
       end
     end
   end
