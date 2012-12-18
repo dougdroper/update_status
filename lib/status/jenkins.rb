@@ -2,6 +2,12 @@
 
 module Status
   class Jenkins
+    attr_reader :target_url
+
+    def target_url
+      "#{Status.ci_url}/job/#{@branch}"
+    end
+
     def initialize(branch)
       @branch = branch.gsub(/\//, "_")
     end
