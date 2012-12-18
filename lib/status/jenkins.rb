@@ -2,6 +2,8 @@
 
 module Status
   class Jenkins
+    attr_reader :branch
+
     def initialize(branch)
       @branch = branch.gsub(/\//, "_")
     end
