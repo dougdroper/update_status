@@ -52,3 +52,4 @@ lib/.DS_Store
 # For rubinius:
 #*.rbc
 
+.rspec
