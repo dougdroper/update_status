@@ -8,9 +8,9 @@ describe Status::Github::Statuses do
 
   subject { Status::Github::Statuses }
   it "has a payload target URL of the ci server URL and the branch name" do
-    @jenkins.stub(:new => stub(:state => "success", :pass? => true))
+    @jenkins.stub(:new => stub(:state => "success", :pass? => true, :target_url => :a_url))
     Status.stub(:ci_url => "http://jenkins-ci.org", :branch => "feature_branch")
-    subject.new("pending", "feature_branch").send(:target_url).should == "http://jenkins-ci.org/job/feature_branch"
+    subject.new("pending", "feature_branch").send(:target_url).should == :a_url
   end
 
   it "has a payload description of the ci state and qa status" do

@@ -28,7 +28,7 @@ module Status
       end
 
       def target_url
-        "#{Status.ci_url}/job/#{@branch}"
+        @jenkins.target_url
       end
 
       def state
