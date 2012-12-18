@@ -34,7 +34,7 @@ module Status
       def state
         return "success" if @jenkins.pass? && @qa_status == "pass"
         return "pending" if @jenkins.pass? && @qa_status != "pass"
-        return "pending" if !@jenkins.pass? && @qa_status != "pass"
+        return "pending" if @jenkins.state == "pending" && @qa_status != "pass"
         git_state
       end
 
