@@ -2,8 +2,19 @@
 
 module Status
   class Jenkins
-    def initialize(branch)
+    attr_reader :target_url
+
+    def target_url
+      @build_url || "#{Status.ci_url}/job/#{@branch}"
+    end
+
+    def initialize(branch, sha=nil)
       @branch = branch.gsub(/\//, "_")
+      @sha = sha
+      @build = "lastBuild"
+      @build_url = nil
+      find_build_for(sha)
+      warn "No build found for SHA #{@sha}" unless @build_url
     end
 
     def state
@@ -26,7 +37,27 @@ module Status
     end
 
     def path
-      "/job/#{@branch}/lastBuild/api/json"
+      "/job/#{@branch}/#{@build}/api/json"
+    end
+
+    def find_build_for(sha)
+      return nil unless sha
+      response = Request.new(:ci).get("/job/#{@branch}/api/json?depth=1")
+      response["builds"].sort{|a,b| b["number"].to_i <=> a["number"].to_i}.each do |build|
+        if build["actions"][1]["lastBuiltRevision"]["SHA1"] =~ /^#{@sha}/
+          @build = build["number"]
+          @build_url = build["url"]
+          return
+        else
+          build["changeSet"]["items"].each do |item|
+            if item["commitId"] =~ /^#{@sha}/
+              @build = build["number"]
+              @build_url = build["url"]
+              return
+            end
+          end
+        end
+      end
     end
   end
 end

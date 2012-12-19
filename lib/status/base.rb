@@ -9,7 +9,8 @@ module Status
     def initialize(options)
       @qa_status = options[:state] || "pending"
       @branch = options[:branch] || branch
-      @statuses = Status::Github::Statuses.new(@qa_status, @branch)
+      @sha = options[:sha] || nil
+      @statuses = Status::Github::Statuses.new(@qa_status, @branch, @sha)
     end
 
     def branch
