@@ -44,11 +44,17 @@ module Status
       return nil unless sha
       response = Request.new(:ci).get("/job/#{@branch}/api/json?depth=1")
       response["builds"].sort{|a,b| b["number"].to_i <=> a["number"].to_i}.each do |build|
-        build["changeSet"]["items"].each do |item|
-          if item["commitId"] =~ /^#{@sha}/
-            @build = build["number"]
-            @build_url = build["url"]
-            return
+        if build["actions"][1]["lastBuiltRevision"]["SHA1"] =~ /^#{@sha}/
+          @build = build["number"]
+          @build_url = build["url"]
+          return
+        else
+          build["changeSet"]["items"].each do |item|
+            if item["commitId"] =~ /^#{@sha}/
+              @build = build["number"]
+              @build_url = build["url"]
+              return
+            end
           end
         end
       end
