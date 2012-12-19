@@ -11,7 +11,7 @@ module Status
       end
 
       def request
-        puts @sha
+        puts sha
         puts status_api
         puts payload
         Request.new.post(status_api, payload)

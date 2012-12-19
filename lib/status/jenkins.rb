@@ -14,6 +14,7 @@ module Status
       @build = "lastBuild"
       @build_url = nil
       find_build_for(sha)
+      warn "No build found for SHA #{@sha}" unless @build_url
     end
 
     def state
