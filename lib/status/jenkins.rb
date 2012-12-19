@@ -8,8 +8,9 @@ module Status
       "#{Status.ci_url}/job/#{@branch}"
     end
 
-    def initialize(branch)
+    def initialize(branch, sha=nil)
       @branch = branch.gsub(/\//, "_")
+      @sha = sha
     end
 
     def state
@@ -32,7 +33,11 @@ module Status
     end
 
     def path
-      "/job/#{@branch}/lastBuild/api/json"
+      "/job/#{@branch}/#{find_build_for(@sha)}/api/json"
+    end
+
+    def find_build_for(sha)
+      return "lastBuild"
     end
   end
 end

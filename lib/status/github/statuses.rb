@@ -3,13 +3,17 @@
 module Status
   module Github
     class Statuses
-      def initialize(qa_status, branch)
+      def initialize(qa_status, branch, sha=nil)
         @qa_status = qa_status
         @branch = branch
         @jenkins = Jenkins.new(branch)
+        @sha = sha
       end
 
       def request
+        puts @sha
+        puts status_api
+        puts payload
         Request.new.post(status_api, payload)
       end
 
@@ -47,7 +51,7 @@ module Status
       end
 
       def sha
-        `git log #{@branch} -1 --pretty=format:'%H'`
+        @sha || `git log #{@branch} -1 --pretty=format:'%H'`
       end
     end
   end
