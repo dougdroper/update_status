@@ -3,10 +3,11 @@
 module Status
   module Github
     class Statuses
-      def initialize(qa_status, branch)
+      def initialize(qa_status, branch, user_sha=nil)
         @qa_status = qa_status
         @branch = branch
-        @jenkins = Jenkins.new(branch)
+        @user_sha = user_sha
+        @jenkins = Jenkins.new(branch, sha)
       end
 
       def request
@@ -28,13 +29,13 @@ module Status
       end
 
       def target_url
-        "#{Status.ci_url}/job/#{@branch}"
+        @jenkins.target_url
       end
 
       def state
         return "success" if @jenkins.pass? && @qa_status == "pass"
         return "pending" if @jenkins.pass? && @qa_status != "pass"
-        return "pending" if @jenkins.state == "pending" && @qa_status != "pass"
+        return "pending" if @jenkins.state == "pending"
         git_state
       end
 
@@ -47,7 +48,7 @@ module Status
       end
 
       def sha
-        `git log #{@branch} -1 --pretty=format:'%H'`
+        @user_sha || `git log #{@branch} -1 --pretty=format:'%H'`
       end
     end
   end
