@@ -17,6 +17,7 @@ describe Status::Jenkins do
 
     it "is success when ci result is success" do
       Status::Request.stub(:new => stub(:get => {"building" => false, "result" => "success"}))
+      subject.instance_variable_set("@build_url", true)
       subject.state.should == "success"
     end
 
