@@ -12,10 +12,13 @@ module Status
       @branch = branch.gsub(/\//, "_")
       @sha = sha
       @build = "lastBuild"
+      @queued = false
       @build_url = nil
       find_build_for(sha)
       warn "No build found for SHA #{@sha}" unless @build_url
     end
+
+    # The only states github's API acccepts are "success", "failure", "pending", and "error".
 
     def state
       return "success" if pass?
@@ -30,18 +33,26 @@ module Status
 
     def get_ci_status
       response = Request.new(:ci).get(path)
-      return "pending" if response == "not found" || @build_url.nil? || response["building"] == true
+      return "pending" if response == "not found" || @queued || response["building"] == true || @build_url.nil?
       return "failure" unless response["result"].downcase == "success"
-       "success"
+      "success"
     end
 
     def path
       "/job/#{@branch}/#{@build}/api/json"
     end
 
+    private
+
     def find_build_for(sha)
       return nil unless sha
       response = Request.new(:ci).get("/job/#{@branch}/api/json?depth=1")
+      if response["queueItem"]
+        @queued = true
+        warn "Your build for SHA #{@sha} is in a queue."
+        @build_url = response["url"]
+        return
+      end
       response["builds"].sort{|a,b| b["number"].to_i <=> a["number"].to_i}.each do |build|
         if build["actions"][1]["lastBuiltRevision"]["SHA1"] =~ /^#{@sha}/
           @build = build["number"]
