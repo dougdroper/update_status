@@ -32,6 +32,7 @@ module Status
         @jenkins.target_url
       end
 
+      # The only states github's API acccepts are "success", "failure", "pending", and "error".
       def state
         return "success" if @jenkins.pass? && @qa_status == "pass"
         return "pending" if @jenkins.pass? && @qa_status != "pass"
@@ -48,7 +49,7 @@ module Status
       end
 
       def sha
-        @user_sha || `git log #{@branch} -1 --pretty=format:'%H'`
+        @user_sha || Status.system_call("git log #{@branch} -1 --pretty=format:'%H'")
       end
     end
   end

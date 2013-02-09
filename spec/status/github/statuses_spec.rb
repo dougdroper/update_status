@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe Status::Github::Statuses do
+  subject { Status::Github::Statuses }
+
   before do
     @jenkins = stub
     stub_const("Status::Jenkins", @jenkins)
+    Status.stub(:system_call)
   end
 
-  subject { Status::Github::Statuses }
   it "has a payload target URL of the ci server URL and the branch name" do
     @jenkins.stub(:new => stub(:state => "success", :pass? => true, :target_url => :a_url))
     Status.stub(:ci_url => "http://jenkins-ci.org", :branch => "feature_branch")

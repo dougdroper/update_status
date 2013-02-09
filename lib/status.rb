@@ -50,4 +50,11 @@ module Status
     Status.config.parsed[:password]
   end
 
+  def system_call(cmd)
+    `#{cmd}`
+  end
+
+  def system_warn(cmd)
+    Kernel.warn cmd
+  end
 end
