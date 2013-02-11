@@ -1,10 +1,13 @@
-## status [![Build Status](https://travis-ci.org/dougdroper/update_status.png?branch=master)](https://travis-ci.org/dougdroper/update_status)
+= status
+
+{<img src="https://travis-ci.org/dougdroper/status.png?branch=master" alt="Build Status" />}[https://travis-ci.org/dougdroper/status]
 
 Updates pull requests on github using the statuses api (http://developer.github.com/v3/repos/statuses/), with latest build from Jenkins and QA status
 
 = Usage
 
 <tt>gem install update_status</tt>
+
 
 on your branch run
 
@@ -14,7 +17,7 @@ This will generate a .status.yml file in the current directory, you will need to
 
 .status.yml:
 
-```ruby
+---
 :username: Jenkins username
 
 :token: Githubs API token (http://developer.github.com/v3/oauth/)
@@ -27,30 +30,27 @@ This will generate a .status.yml file in the current directory, you will need to
 
 :ci_url: eg. http://ci.jenkins.com
 
-:qa_required: true
-```
-
 add .status.yml to .gitignore
 
 When your branch has passed QA
 
-  $: <tt>status -q pass</tt>
+$: <tt>status -q pass</tt>
 
 You can pass a different branch
 
-  $: <tt>status -b other_feature_branch</tt>
+$: <tt>status -b other_feature_branch</tt>
 
 or
 
-  $: <tt>status -b other_feature_branch -q pass</tt>
+$: <tt>status -b other_feature_branch -q pass</tt>
 
 You can also pass based on the SHA
 
-  $: <tt>status -s SHA -q pass</tt>
+$: <tt>status -s SHA -q pass</tt>
 
 help
 
-  $: <tt>status -h</tt>
+$: <tt>status -h</tt>
 
 == Contributing to status
 

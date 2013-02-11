@@ -21,6 +21,10 @@ module Status
       end
 
       def description
+        description_text.tap {|d| puts d}
+      end
+
+      def description_text
         "Build status: #{@jenkins.state}, QA #{@qa_status}"
       end
 
