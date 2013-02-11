@@ -6,7 +6,7 @@ describe Status::Jenkins do
 
   before do
     Status.stub(:config => stub(:attrs => {}, :parsed => {}))
-    stub(Status::Request)
+    Status::Request.any_instance.stub(:get)
     Status.stub(:system_warn)
   end
 

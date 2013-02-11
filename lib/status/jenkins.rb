@@ -9,22 +9,25 @@ module Status
     end
 
     def target_url
-      Status.system_warn "No build found for SHA #{@sha}" if build_url.nil? && @sha
       build_url || "#{Status.ci_url}/job/#{@branch}"
     end
 
     def state
-      ci_status
+      status
     end
 
     def pass?
-      ci_status == "success"
+      status == "success"
     end
 
     private
 
     def path
       "/job/#{@branch}/#{build}/api/json"
+    end
+
+    def status
+      @status ||= ci_status
     end
 
     def ci_status
@@ -43,7 +46,9 @@ module Status
     end
 
     def build_url
-      return unless last_build
+      if last_build.nil?
+        return
+      end
       last_build["url"]
     end
 
@@ -73,7 +78,11 @@ module Status
     end
 
     def queued?
-      ci_response["queueItem"]
+      (!!ci_response["queueItem"]).tap do |queued|
+        if queued
+          Status.system_warn "Your build (#{@branch}) is in a queue."
+        end
+      end
     end
 
     def last_build_contails_sha?(build)

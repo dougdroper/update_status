@@ -35,6 +35,11 @@ describe Status::Github::Statuses do
     subject.new("pass", "feature_branch").send(:state).should == "success"
   end
 
+  it "has a payloads success state when ci is n/a and qa has passed" do
+    @jenkins.stub(:new => stub(:state => "success", :pass? => true))
+    subject.new("n/a", "feature_branch").send(:state).should == "success"
+  end
+
   it "has a payload error state when ci has an error" do
     @jenkins.stub(:new => stub(:state => "nothing", :pass? => false))
     subject.new("pass", "feature_branch").send(:state).should == "error"
