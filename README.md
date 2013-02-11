@@ -1,10 +1,9 @@
-= status
-
-{<img src="https://travis-ci.org/dougdroper/status.png?branch=master" alt="Build Status" />}[https://travis-ci.org/dougdroper/status]
+# status [![Build Status](https://travis-ci.org/dougdroper/update_status.png?branch=master)](https://travis-ci.org/dougdroper/update_status)
 
 Updates pull requests on github using the statuses api (http://developer.github.com/v3/repos/statuses/), with latest build from Jenkins and QA status
 
-= Usage
+## Usage
+
 
 <tt>gem install update_status</tt>
 
@@ -17,42 +16,43 @@ This will generate a .status.yml file in the current directory, you will need to
 
 .status.yml:
 
----
-:username: Jenkins username
-
-:token: Githubs API token (http://developer.github.com/v3/oauth/)
-
-:owner: eg. dougdroper
-
-:password: Jenkins password
-
-:repo: eg. status
-
-:ci_url: eg. http://ci.jenkins.com
+```ruby
+  :username: Jenkins username
+  :password: Jenkins password
+  :token: Githubs API token (http://developer.github.com/v3/oauth/)
+  :owner: Owner of the repository eg. dougdroper
+  :repo: eg. status
+  :ci_url: eg. http://ci.jenkins.com
+  :qa_required: true
+```
 
 add .status.yml to .gitignore
 
+##
+
 When your branch has passed QA
 
-$: <tt>status -q pass</tt>
+  $: <tt>status -q pass</tt>
 
 You can pass a different branch
 
-$: <tt>status -b other_feature_branch</tt>
+  $: <tt>status -b other_feature_branch</tt>
 
 or
 
-$: <tt>status -b other_feature_branch -q pass</tt>
+  $: <tt>status -b other_feature_branch -q pass</tt>
 
 You can also pass based on the SHA
 
-$: <tt>status -s SHA -q pass</tt>
+  $: <tt>status -s SHA -q pass</tt>
+
+When qa_required is false then there is no need to pass in a qa option
 
 help
 
 $: <tt>status -h</tt>
 
-== Contributing to status
+## Contributing to status
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -62,7 +62,7 @@ $: <tt>status -h</tt>
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-== Copyright
+## Copyright
 
 Copyright (c) 2012 Douglas Roper. See LICENSE.txt for
 further details.
