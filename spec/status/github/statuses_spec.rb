@@ -17,7 +17,7 @@ describe Status::Github::Statuses do
 
   it "has a payload description of the ci state and qa status" do
     @jenkins.stub(:new => stub(:state => "success"))
-    subject.new("pending", "feature_branch").send(:description).should == "Build status: success, QA pending"
+    subject.new("pending", "feature_branch").send(:description_text).should == "Build status: success, QA pending"
   end
 
   it "has a payload pending state when ci is passing but qa hasn't passed" do
