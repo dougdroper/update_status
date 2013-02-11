@@ -52,6 +52,36 @@ help
 
 $: <tt>status -h</tt>
 
+## Github oauth
+
+You need an API token to interact with githubs api
+
+$: curl -u "YOUR GITHUB USERNAME" -d '{"add_scopes":["repo"]}' https://api.github.com/authorizations
+
+```javascript
+{
+  "id": 1,
+  "url": "https://api.github.com/authorizations/1",
+  "app": {
+    "name": "GitHub API",
+    "url": "http://developer.github.com/v3/oauth/#oauth-authorizations-api"
+  },
+  "token": "NEW TOKEN",
+  "note": null,
+  "note_url": null,
+  "created_at": "2013-02-11T17:02:36Z",
+  "updated_at": "2013-02-11T17:02:36Z",
+  "scopes": [
+  ]
+}
+```
+
+This generates a new token, now you need to add_scopes to the id of the returned token
+
+$: curl -u "YOUR GITHUB USERNAME" -d '{"add_scopes":["repo"]}' https://api.github.com/authorizations/1
+
+Then add this token in the .status.yml file
+
 ## Contributing to status
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
