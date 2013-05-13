@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
     "spec/status/jenkins_spec.rb",
     "update_status.gemspec"
   ]
-  s.homepage = "http://github.com/dougdroper/status"
+  s.homepage = "http://github.com/dougdroper/update_status"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.25"
