@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "update_status"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Douglas Roper"]
-  s.date = "2013-02-13"
+  s.date = "2013-05-13"
   s.description = "Updates pull requests on github, with latest build from Jenkins and QA status"
   s.email = "douglasroper@notonthehighstreet.com"
   s.executables = ["status"]
@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
     "spec/status/jenkins_spec.rb",
     "update_status.gemspec"
   ]
-  s.homepage = "http://github.com/dougdroper/update_status"
+  s.homepage = "http://github.com/dougdroper/status"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.25"
